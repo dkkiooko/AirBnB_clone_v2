@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ do_pack generates a .tgz archive from contents of web_static """
 from datetime import datetime
-from invoke import run as local
+from fabric.api import local
 from os.path import isdir
 
 
