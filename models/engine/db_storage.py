@@ -41,7 +41,7 @@ class DBStorage:
         else:
             Class = eval(cls) if type(cls) == str else cls
             objs = self.__session.query(Class).all()
-        return {f'{type(obj).__name__}.{obj.id}': obj for obj in objs}
+        return {'{}.{}'.format(type(obj).__name__, obj.id): obj for obj in objs}
 
     def new(self, obj):
         """ add object to current database session """
@@ -60,8 +60,8 @@ class DBStorage:
     def reload(self):
         """ reloads all data in db """
         Base.metadata.create_all(self.__engine)
-        s_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(s_factory)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()
 
     def close(self):
